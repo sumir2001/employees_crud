@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     final isFormValid = _formKey.currentState?.validate() ?? false;
 
     final request = LoginRequest(
-      username: _usernameController.text,
+      username: _usernameController.text.trim(),
       password: _passwordController.text,
     );
 
@@ -40,17 +40,18 @@ class _LoginPageState extends State<LoginPage> {
         (l) => setState(() {
           toastification.show(
               context: context,
+              type: ToastificationType.error,
               title: Text('Error: ${l.message}'),
-              autoCloseDuration: const Duration(seconds: 5),
+              autoCloseDuration: const Duration(seconds: 4),
               boxShadow: const [
                 BoxShadow(
-                  color: Color(0x07000000),
-                  blurRadius: 16,
-                  offset: Offset(0, 16),
+                  color: Color.fromRGBO(226, 68, 68, 0.416),
+                  blurRadius: 6,
+                  offset: Offset(0, 2),
                   spreadRadius: 0,
                 )
               ],
-              primaryColor: const Color(0xFF5F2F93));
+              primaryColor: const Color.fromARGB(184, 226, 68, 68));
           _isLoading = false;
         }),
         (r) async {
@@ -63,19 +64,6 @@ class _LoginPageState extends State<LoginPage> {
 
           // print(decodedToken['id']);
           // print(decodedToken['name']);
-          toastification.show(
-              context: context,
-              title: const Text('Successfully logged in'),
-              autoCloseDuration: const Duration(seconds: 5),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0x07000000),
-                  blurRadius: 16,
-                  offset: Offset(0, 16),
-                  spreadRadius: 0,
-                )
-              ],
-              primaryColor: const Color(0xFF5F2F93));
 
           Navigator.push(
             context,
@@ -84,7 +72,24 @@ class _LoginPageState extends State<LoginPage> {
                     HomePage(username: decodedToken['name'], id: 2)),
           );
 
+          toastification.show(
+              context: context,
+              type: ToastificationType.success,
+              title: const Text('Successfully logged in'),
+              autoCloseDuration: const Duration(seconds: 4),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0xFF5F2F93),
+                  blurRadius: 6,
+                  offset: Offset(0, 2),
+                  spreadRadius: 0,
+                )
+              ],
+              primaryColor: const Color(0xFF5F2F93));
+
           _isLoading = false;
+          _usernameController.clear();
+          _passwordController.clear();
         },
       );
     }

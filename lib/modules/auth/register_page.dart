@@ -37,58 +37,47 @@ class _RegisterPageState extends State<RegisterPage> {
         (l) => setState(() {
           toastification.show(
               context: context,
+              type: ToastificationType.error,
               title: Text('Error: ${l.message}'),
-              autoCloseDuration: const Duration(seconds: 5),
+              autoCloseDuration: const Duration(seconds: 4),
               boxShadow: const [
                 BoxShadow(
-                  color: Color(0x07000000),
-                  blurRadius: 16,
-                  offset: Offset(0, 16),
+                  color: Color.fromRGBO(226, 68, 68, 0.416),
+                  blurRadius: 6,
+                  offset: Offset(0, 2),
                   spreadRadius: 0,
                 )
               ],
-              primaryColor: const Color(0xFF5F2F93));
+              primaryColor: const Color.fromARGB(184, 226, 68, 68));
           _isLoading = false;
         }),
         (r) async {
           // print("data ${r.data!.username ?? 'No username'}");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomePage(
+                    username: r.data!.username ?? '', id: r.data!.id ?? 0)),
+          );
+
           toastification.show(
               context: context,
+              type: ToastificationType.success,
               title: const Text('Successfully registered'),
-              autoCloseDuration: const Duration(seconds: 5),
+              autoCloseDuration: const Duration(seconds: 4),
               boxShadow: const [
                 BoxShadow(
-                  color: Color(0x07000000),
-                  blurRadius: 16,
-                  offset: Offset(0, 16),
+                  color: Color(0xFF5F2F93),
+                  blurRadius: 6,
+                  offset: Offset(0, 2),
                   spreadRadius: 0,
                 )
               ],
               primaryColor: const Color(0xFF5F2F93));
 
-          if (r.data?.username != null && r.data?.id != null) {
-            MaterialPageRoute(
-              builder: (context) => HomePage(
-                username: r.data!.username ?? '',
-                id: r.data!.id ?? 0,
-              ),
-            );
-          } else {
-            toastification.show(
-                context: context,
-                title: const Text('Error empty username'),
-                autoCloseDuration: const Duration(seconds: 5),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x07000000),
-                    blurRadius: 16,
-                    offset: Offset(0, 16),
-                    spreadRadius: 0,
-                  )
-                ],
-                primaryColor: const Color(0xFF5F2F93));
-          }
           _isLoading = false;
+          _usernameController.clear();
+          _passwordController.clear();
         },
       );
     }
