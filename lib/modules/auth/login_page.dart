@@ -62,14 +62,10 @@ class _LoginPageState extends State<LoginPage> {
           await _storage.write('expiryDate', expiryDate?.toIso8601String());
           await _storage.write('name', decodedToken['name']);
 
-          // print(decodedToken['id']);
-          // print(decodedToken['name']);
-
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    HomePage(username: decodedToken['name'], id: 2)),
+                builder: (context) => HomePage(username: decodedToken['name'])),
           );
 
           toastification.show(

@@ -2,17 +2,17 @@ import 'package:employee_crud/modules/auth/dtos/error_response.dart';
 import 'package:employee_crud/modules/auth/login_page.dart';
 import 'package:employee_crud/modules/dashboard/dtos/employee_response.dart';
 import 'package:employee_crud/modules/dashboard/services/dashboard_service.dart';
+import 'package:employee_crud/modules/employee/add_employee.dart';
+import 'package:employee_crud/modules/employee/employee_details.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:fpdart/fpdart.dart' as fp;
-import 'package:intl/intl.dart';
 
 typedef AllEmployeesResponse = fp.Either<ErrorResponse, EmployeesResponse>;
 
 class HomePage extends StatefulWidget {
   final String username;
-  final int id;
-  const HomePage({super.key, required this.username, required this.id});
+  const HomePage({super.key, required this.username});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -62,7 +62,8 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+          padding: const EdgeInsets.only(
+              top: 20.0, right: 10.0, left: 10.0, bottom: 45.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -161,7 +162,7 @@ class _HomePageState extends State<HomePage> {
               ),
               const Text(
                 "All employees",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8),
@@ -222,9 +223,7 @@ class _HomePageState extends State<HomePage> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    e.firstName! +
-                                                        " " +
-                                                        e.lastName!,
+                                                    "${e.firstName!} ${e.lastName!}",
                                                   ),
                                                   const SizedBox(
                                                     height: 6,
@@ -243,8 +242,13 @@ class _HomePageState extends State<HomePage> {
                                                     BorderRadius.circular(4),
                                                 child: InkWell(
                                                   onTap: () {
-                                                    print(
-                                                        'Navigate to next page');
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EmployeeDetails(
+                                                                  id: e.id!)),
+                                                    );
                                                   },
                                                   child: Ink(
                                                     child: Container(
@@ -282,7 +286,12 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddEmployee()),
+          );
+        },
         backgroundColor: const Color(0xFF8265a0),
         child: const Icon(Icons.add),
       ),

@@ -55,15 +55,14 @@ class _RegisterPageState extends State<RegisterPage> {
           // print("data ${r.data!.username ?? 'No username'}");
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => HomePage(
-                    username: r.data!.username ?? '', id: r.data!.id ?? 0)),
+            MaterialPageRoute(builder: (context) => const LoginPage()),
           );
 
           toastification.show(
             context: context,
             type: ToastificationType.success,
-            title: const Text('Successfully registered'),
+            title:
+                const Text('Successfully registered, please login to continue'),
             autoCloseDuration: const Duration(seconds: 4),
             boxShadow: const [
               BoxShadow(
@@ -173,9 +172,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         height: 20,
                                         child: CircularProgressIndicator(),
                                       ),
-                                      SizedBox(
-                                          width:
-                                              10), // add some space between the circle and the text
+                                      SizedBox(width: 10),
                                       Text('Loading...'),
                                     ],
                                   )
