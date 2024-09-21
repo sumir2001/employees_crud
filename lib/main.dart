@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
 void main() async {
-  // final SharedPreferences prefs = await SharedPreferences.getInstance();
   await GetStorage.init();
   runApp(const MyApp());
 }

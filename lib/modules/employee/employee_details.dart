@@ -4,6 +4,7 @@ import 'package:employee_crud/modules/dashboard/home_page.dart';
 import 'package:employee_crud/modules/employee/services/employee_service.dart';
 import 'package:employee_crud/modules/employee/update_employee.dart';
 import 'package:employee_crud/modules/widgets/detail_row.dart';
+import 'package:employee_crud/modules/widgets/loading_container.dart';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart' as fp;
 import 'package:get_storage/get_storage.dart';
@@ -119,7 +120,8 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                       _storage.read('token'), widget.id),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Text("Loading details .....");
+                      return const Loader(
+                          description: "Loading employee details ...");
                     }
                     if (snapshot.hasError) {
                       logError("Error fetching employee details",

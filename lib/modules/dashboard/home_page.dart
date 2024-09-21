@@ -4,6 +4,7 @@ import 'package:employee_crud/modules/dashboard/dtos/employee_response.dart';
 import 'package:employee_crud/modules/dashboard/services/dashboard_service.dart';
 import 'package:employee_crud/modules/employee/add_employee.dart';
 import 'package:employee_crud/modules/employee/employee_details.dart';
+import 'package:employee_crud/modules/widgets/loading_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:fpdart/fpdart.dart' as fp;
@@ -44,9 +45,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu),
-          onPressed: () {
-            // Add functionality to open the navigation drawer
-          },
+          onPressed: () {},
         ),
         actions: [
           IconButton(
@@ -167,120 +166,121 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: FutureBuilder<AllEmployeesResponse?>(
-                    future:
-                        DashboardService.getEmployees(_storage.read('token')),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Text("Loading all employees .....");
-                      }
+                  future: DashboardService.getEmployees(_storage.read('token')),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Loader(
+                          description: "Loading all employees ...");
+                    }
 
-                      if (snapshot.hasData) {
-                        final data = snapshot.data!;
+                    if (snapshot.hasData) {
+                      final data = snapshot.data!;
 
-                        return data.match((l) {
-                          return const Text("Could not fetch any employees");
-                        },
-                            (r) => SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      if (r.data!.isEmpty)
-                                        const Text("No employees added"),
-                                      ...r.data!.map((e) {
-                                        return Container(
-                                          width: double.infinity,
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 14, horizontal: 16),
-                                          margin:
-                                              const EdgeInsets.only(bottom: 12),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Colors.grey.shade300,
-                                                  blurRadius: 6,
-                                                  offset: const Offset(0, 4))
-                                            ],
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              CircleAvatar(
-                                                backgroundColor:
-                                                    const Color(0xFF8265a0),
-                                                child: Text(
-                                                  '${e.firstName!.substring(0, 1).toUpperCase()}${e.lastName!.substring(0, 1).toUpperCase()}',
-                                                  style: const TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.white),
+                      return data.match((l) {
+                        return const Text("Could not fetch any employees");
+                      },
+                          (r) => SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    if (r.data!.isEmpty)
+                                      const Text("No employees added"),
+                                    ...r.data!.map((e) {
+                                      return Container(
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 14, horizontal: 16),
+                                        margin:
+                                            const EdgeInsets.only(bottom: 12),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.grey.shade300,
+                                                blurRadius: 6,
+                                                offset: const Offset(0, 4))
+                                          ],
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundColor:
+                                                  const Color(0xFF8265a0),
+                                              child: Text(
+                                                '${e.firstName!.substring(0, 1).toUpperCase()}${e.lastName!.substring(0, 1).toUpperCase()}',
+                                                style: const TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 16,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${e.firstName!} ${e.lastName!}",
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                width: 16,
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "${e.firstName!} ${e.lastName!}",
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 6,
-                                                  ),
-                                                  Text(
-                                                    e.email!,
-                                                    style: TextStyle(
-                                                        color: Colors
-                                                            .grey.shade800),
-                                                  ),
-                                                ],
-                                              ),
-                                              const Spacer(),
-                                              Material(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              EmployeeDetails(
-                                                                  id: e.id!)),
-                                                    );
-                                                  },
-                                                  child: Ink(
-                                                    child: Container(
-                                                      width: 36,
-                                                      height: 36,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors
-                                                            .grey.shade100,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4),
-                                                      ),
-                                                      child: const Icon(
-                                                        Icons.arrow_forward_ios,
-                                                        size: 16,
-                                                      ),
+                                                const SizedBox(
+                                                  height: 6,
+                                                ),
+                                                Text(
+                                                  e.email!,
+                                                  style: TextStyle(
+                                                      color:
+                                                          Colors.grey.shade800),
+                                                ),
+                                              ],
+                                            ),
+                                            const Spacer(),
+                                            Material(
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EmployeeDetails(
+                                                                id: e.id!)),
+                                                  );
+                                                },
+                                                child: Ink(
+                                                  child: Container(
+                                                    width: 36,
+                                                    height: 36,
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          Colors.grey.shade100,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.arrow_forward_ios,
+                                                      size: 16,
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        );
-                                      }),
-                                    ],
-                                  ),
-                                ));
-                      }
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                                  ],
+                                ),
+                              ));
+                    }
 
-                      return const Text("Something went wrong");
-                    }),
-              )
+                    return const Text("Something went wrong");
+                  },
+                ),
+              ),
             ],
           ),
         ),

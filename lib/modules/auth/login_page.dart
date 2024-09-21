@@ -180,9 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                                         height: 20,
                                         child: CircularProgressIndicator(),
                                       ),
-                                      SizedBox(
-                                          width:
-                                              10), // add some space between the circle and the text
+                                      SizedBox(width: 10),
                                       Text('Loading...'),
                                     ],
                                   )
