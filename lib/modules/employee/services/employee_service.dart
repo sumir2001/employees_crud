@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:employee_crud/http.dart';
 import 'package:employee_crud/modules/auth/dtos/error_response.dart';
-import 'package:employee_crud/modules/auth/login_page.dart';
 import 'package:employee_crud/modules/dashboard/dtos/employee_response.dart';
 import 'package:employee_crud/modules/employee/dtos/employeeRequest.dart';
 import 'package:employee_crud/modules/employee/dtos/successResponse.dart';
-import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:loggy/loggy.dart';
 
@@ -68,6 +66,31 @@ class EmployeeService {
       }
     } catch (e, stacktrace) {
       logError("Employee create error", e, stacktrace);
+      return Left(ErrorResponse as ErrorResponse);
+    }
+  }
+
+  static Future<Either<ErrorResponse, EmployeeRequest>> updateEmployee(
+      String token, int id, EmployeeRequest request) async {
+    try {
+      final headers = {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      };
+
+      final response = await Http.dioClient.put<String>(
+        "employees/$id",
+        options: Options(headers: headers),
+        data: jsonEncode(request.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        return Right(EmployeeRequest.fromJson(jsonDecode(response.data!)));
+      } else {
+        return Left(ErrorResponse.fromJson(jsonDecode(response.data!)));
+      }
+    } catch (e, stacktrace) {
+      logError("Employee update error", e, stacktrace);
       return Left(ErrorResponse as ErrorResponse);
     }
   }

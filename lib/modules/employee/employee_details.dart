@@ -2,6 +2,7 @@ import 'package:employee_crud/modules/auth/dtos/error_response.dart';
 import 'package:employee_crud/modules/dashboard/dtos/employee_response.dart';
 import 'package:employee_crud/modules/dashboard/home_page.dart';
 import 'package:employee_crud/modules/employee/services/employee_service.dart';
+import 'package:employee_crud/modules/employee/update_employee.dart';
 import 'package:employee_crud/modules/widgets/detail_row.dart';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart' as fp;
@@ -46,15 +47,6 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
         _isLoading = false;
       }),
       (r) async {
-        final username = await _storage.read('name');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => HomePage(
-                    username: username,
-                  )),
-        );
-
         toastification.show(
           context: context,
           type: ToastificationType.success,
@@ -62,13 +54,24 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
           autoCloseDuration: const Duration(seconds: 4),
           boxShadow: const [
             BoxShadow(
-              color: Color(0xFF8265a0),
+              color: Color.fromARGB(255, 100, 206, 128),
               blurRadius: 6,
               offset: Offset(0, 2),
               spreadRadius: 0,
             )
           ],
-          primaryColor: const Color(0xFF8265a0),
+          primaryColor: const Color.fromARGB(255, 100, 206, 128),
+        );
+
+        final username = await _storage.read('name');
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(
+              username: username,
+            ),
+          ),
         );
 
         _isLoading = false;
@@ -119,7 +122,6 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                       return const Text("Loading details .....");
                     }
                     if (snapshot.hasError) {
-                      // Log the error
                       logError("Error fetching employee details",
                           snapshot.error, snapshot.stackTrace);
                       return Text("Error: ${snapshot.error}");
@@ -191,7 +193,19 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(double.infinity, 40)),
-                              onPressed: _isLoading ? null : () {},
+                              onPressed: _isLoading
+                                  ? null
+                                  : () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                UpdateEmployee(
+                                                  employeeId: employee.id!,
+                                                  employee: r,
+                                                )),
+                                      );
+                                    },
                               child: _isLoading
                                   ? const Row(
                                       mainAxisAlignment:

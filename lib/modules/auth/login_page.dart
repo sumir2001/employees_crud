@@ -62,12 +62,6 @@ class _LoginPageState extends State<LoginPage> {
           await _storage.write('expiryDate', expiryDate?.toIso8601String());
           await _storage.write('name', decodedToken['name']);
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => HomePage(username: decodedToken['name'])),
-          );
-
           toastification.show(
               context: context,
               type: ToastificationType.success,
@@ -75,13 +69,19 @@ class _LoginPageState extends State<LoginPage> {
               autoCloseDuration: const Duration(seconds: 4),
               boxShadow: const [
                 BoxShadow(
-                  color: Color(0xFF8265a0),
+                  color: Color.fromARGB(255, 100, 206, 128),
                   blurRadius: 6,
                   offset: Offset(0, 2),
                   spreadRadius: 0,
                 )
               ],
-              primaryColor: Color(0xFF8265a0));
+              primaryColor: Color.fromARGB(255, 100, 206, 128));
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomePage(username: decodedToken['name'])),
+          );
 
           _isLoading = false;
           _usernameController.clear();

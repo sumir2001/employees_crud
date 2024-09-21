@@ -1,7 +1,6 @@
 import 'package:employee_crud/modules/auth/dtos/login_reg_request.dart';
 import 'package:employee_crud/modules/auth/login_page.dart';
 import 'package:employee_crud/modules/auth/services/auth_service.dart';
-import 'package:employee_crud/modules/dashboard/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
@@ -52,27 +51,25 @@ class _RegisterPageState extends State<RegisterPage> {
           _isLoading = false;
         }),
         (r) async {
-          // print("data ${r.data!.username ?? 'No username'}");
+          toastification.show(
+              context: context,
+              type: ToastificationType.success,
+              title: const Text(
+                  'Successfully registered, please login to continue'),
+              autoCloseDuration: const Duration(seconds: 4),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromARGB(255, 100, 206, 128),
+                  blurRadius: 6,
+                  offset: Offset(0, 2),
+                  spreadRadius: 0,
+                )
+              ],
+              primaryColor: const Color.fromARGB(255, 100, 206, 128));
+
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const LoginPage()),
-          );
-
-          toastification.show(
-            context: context,
-            type: ToastificationType.success,
-            title:
-                const Text('Successfully registered, please login to continue'),
-            autoCloseDuration: const Duration(seconds: 4),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0xFF8265a0),
-                blurRadius: 6,
-                offset: Offset(0, 2),
-                spreadRadius: 0,
-              )
-            ],
-            primaryColor: const Color(0xFF8265a0),
           );
 
           _isLoading = false;
