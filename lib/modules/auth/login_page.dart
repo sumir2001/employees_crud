@@ -79,13 +79,13 @@ class _LoginPageState extends State<LoginPage> {
               autoCloseDuration: const Duration(seconds: 4),
               boxShadow: const [
                 BoxShadow(
-                  color: Color(0xFF5F2F93),
+                  color: Color(0xFF8265a0),
                   blurRadius: 6,
                   offset: Offset(0, 2),
                   spreadRadius: 0,
                 )
               ],
-              primaryColor: const Color(0xFF5F2F93));
+              primaryColor: Color(0xFF8265a0));
 
           _isLoading = false;
           _usernameController.clear();

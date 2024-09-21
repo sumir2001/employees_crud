@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Employees',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF5F2F93)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF8265a0)),
         useMaterial3: false,
       ),
       home: const LoginPage(),

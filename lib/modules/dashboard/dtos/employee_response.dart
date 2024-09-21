@@ -53,7 +53,7 @@ class Data {
   });
 
   Data.fromJson(Map<String, dynamic> json)
-      : id = json['id'] as int?,
+      : id = json['ID'] as int?,
         firstName = json['first_name'] as String?,
         lastName = json['last_name'] as String?,
         email = json['email'] as String?,
@@ -63,11 +63,11 @@ class Data {
         isFulltime = json['is_fulltime'] as bool?,
         gender = json['gender'] as String?,
         department = json['department'] as String?,
-        createdAt = json['created_at'] as String?,
-        updatedAt = json['updated_at'] as String?;
+        createdAt = json['CreatedAt'] as String?,
+        updatedAt = json['UpdatedAt'] as String?;
 
   Map<String, dynamic> toJson() => {
-        'id': id,
+        'ID': id,
         'first_name': firstName,
         'last_name': lastName,
         'email': email,
@@ -77,7 +77,7 @@ class Data {
         'is_fulltime': isFulltime,
         'gender': gender,
         'department': department,
-        'created_at': createdAt,
-        'updated_at': updatedAt
+        'CreatedAt': createdAt,
+        'UpdatedAt': updatedAt
       };
 }

@@ -61,19 +61,20 @@ class _RegisterPageState extends State<RegisterPage> {
           );
 
           toastification.show(
-              context: context,
-              type: ToastificationType.success,
-              title: const Text('Successfully registered'),
-              autoCloseDuration: const Duration(seconds: 4),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0xFF5F2F93),
-                  blurRadius: 6,
-                  offset: Offset(0, 2),
-                  spreadRadius: 0,
-                )
-              ],
-              primaryColor: const Color(0xFF5F2F93));
+            context: context,
+            type: ToastificationType.success,
+            title: const Text('Successfully registered'),
+            autoCloseDuration: const Duration(seconds: 4),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0xFF8265a0),
+                blurRadius: 6,
+                offset: Offset(0, 2),
+                spreadRadius: 0,
+              )
+            ],
+            primaryColor: const Color(0xFF8265a0),
+          );
 
           _isLoading = false;
           _usernameController.clear();
