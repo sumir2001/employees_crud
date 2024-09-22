@@ -6,7 +6,6 @@ import 'package:employee_crud/modules/employee/add_employee.dart';
 import 'package:employee_crud/modules/employee/employee_details.dart';
 import 'package:employee_crud/modules/widgets/loading_container.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:fpdart/fpdart.dart' as fp;
 
 typedef AllEmployeesResponse = fp.Either<ErrorResponse, EmployeesResponse>;
@@ -20,12 +19,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _storage = GetStorage();
   late Future<EmployeesResponse?> _employeesFuture;
 
   Future<EmployeesResponse?> _getEmployees() async {
-    final token = await _storage.read('token');
-    final response = await DashboardService.getEmployees(token!);
+    final response = await DashboardService.getEmployees();
 
     var x = response.match((l) {}, (r) {
       return r;
@@ -166,7 +163,7 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: FutureBuilder<AllEmployeesResponse?>(
-                  future: DashboardService.getEmployees(_storage.read('token')),
+                  future: DashboardService.getEmployees(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Loader(
@@ -177,7 +174,9 @@ class _HomePageState extends State<HomePage> {
                       final data = snapshot.data!;
 
                       return data.match((l) {
-                        return const Text("Could not fetch any employees");
+                        return Text(
+                            l.message ?? 'Could not fetch any employees',
+                            style: const TextStyle(color: Colors.red));
                       },
                           (r) => SingleChildScrollView(
                                 child: Column(

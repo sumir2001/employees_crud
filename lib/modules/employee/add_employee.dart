@@ -39,8 +39,7 @@ class _AddEmployeeState extends State<AddEmployee> {
         gender: _selectedGender,
         isFulltime: _isFulltime);
 
-    final response =
-        await EmployeeService.createEmployee(_storage.read('token'), request);
+    final response = await EmployeeService.createEmployee(request);
     response.match(
       (l) => setState(() {
         toastification.show(

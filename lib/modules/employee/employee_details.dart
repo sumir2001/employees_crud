@@ -27,8 +27,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
   bool _isLoading = false;
 
   Future<void> _deleteEmployee(int id) async {
-    final response =
-        await EmployeeService.deleteEmployee(_storage.read('token'), id);
+    final response = await EmployeeService.deleteEmployee(id);
     response.match(
       (l) => setState(() {
         toastification.show(
@@ -116,8 +115,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
               Padding(
                 padding: const EdgeInsets.all(4),
                 child: FutureBuilder<EmployeeDetailResponse?>(
-                  future: EmployeeService.getEmployeeById(
-                      _storage.read('token'), widget.id),
+                  future: EmployeeService.getEmployeeById(widget.id),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Loader(
@@ -132,7 +130,9 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                       final data = snapshot.data!;
 
                       return data.match((l) {
-                        return const Text("Could not fetch any employees");
+                        return Text(
+                            l.message ?? 'Could not fetch employee details',
+                            style: const TextStyle(color: Colors.red));
                       }, (r) {
                         final employee = r.data![0];
                         return Column(

@@ -3,7 +3,6 @@ import 'package:employee_crud/modules/employee/dtos/employeeRequest.dart';
 import 'package:employee_crud/modules/employee/employee_details.dart';
 import 'package:employee_crud/modules/employee/services/employee_service.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:toastification/toastification.dart';
 
 class UpdateEmployee extends StatefulWidget {
@@ -17,7 +16,6 @@ class UpdateEmployee extends StatefulWidget {
 }
 
 class _UpdateEmployeeState extends State<UpdateEmployee> {
-  final _storage = GetStorage();
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
@@ -58,8 +56,8 @@ class _UpdateEmployeeState extends State<UpdateEmployee> {
         gender: _selectedGender,
         isFulltime: _isFulltime);
 
-    final response = await EmployeeService.updateEmployee(
-        _storage.read('token'), widget.employeeId, request);
+    final response =
+        await EmployeeService.updateEmployee(widget.employeeId, request);
     response.match(
       (l) => setState(() {
         toastification.show(
@@ -94,8 +92,6 @@ class _UpdateEmployeeState extends State<UpdateEmployee> {
           ],
           primaryColor: const Color.fromARGB(255, 100, 206, 128),
         );
-
-        final username = await _storage.read('name');
 
         Navigator.push(
           context,
@@ -229,16 +225,18 @@ class _UpdateEmployeeState extends State<UpdateEmployee> {
                     textCapitalization: TextCapitalization.none,
                   ),
                   TextFormField(
-                      decoration:
-                          const InputDecoration(labelText: 'Country Code'),
-                      keyboardType: TextInputType.number,
-                      controller: _countryCodeController,
-                      maxLength: 3,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter country code';
-                        }
-                      }),
+                    decoration:
+                        const InputDecoration(labelText: 'Country Code'),
+                    keyboardType: TextInputType.number,
+                    controller: _countryCodeController,
+                    maxLength: 3,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter country code';
+                      }
+                      return null;
+                    },
+                  ),
                   TextFormField(
                     decoration: const InputDecoration(
                       label: Text('Phone Number'),
